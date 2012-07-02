@@ -1,0 +1,75 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'commander/import'
+require './config_store'
+
+program :version, ConfigStore::VERSION
+program :description, "Loads environment variables remotely in your project so that you don't have t write them by hand in your dotfiles."
+default_command :export
+
+
+command :show do |c|
+  c.syntax = 'config-store show'
+  c.summary = 'Displays the current environement variables in your store.'
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Config-store::Commands::Show
+  end
+end
+
+command :export do |c|
+  c.syntax = 'config-store export'
+  c.summary = 'Runs an export for every key-value pair in your store. This is what you want to call in your dotfiles.'
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Config-store::Commands::Show
+  end
+end
+
+command :setup do |c|
+  c.syntax = 'config-store setup [options]'
+  c.summary = 'Creates or mofify your current .config-store file to setup the org/store ypur project is related to.'
+  c.description = ''
+  c.example 'description', 'config-store setup org=myorg store=mystore'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Config-store::Commands::Setup
+  end
+end
+
+command :add do |c|
+  c.syntax = 'config-store add key=value'
+  c.summary = 'Adds key-value pair(s) to your store.'
+  c.example 'Adds two new pairs to your store', 'config-store add key=value key2=value2'
+  c.action do |args, options|
+    # Do something or c.when_called Config-store::Commands::Add
+  end
+end
+
+command :remove do |c|
+  c.syntax = 'config-store remove [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Config-store::Commands::Remove
+  end
+end
+
+command :update do |c|
+  c.syntax = 'config-store update [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Config-store::Commands::Update
+  end
+end
+

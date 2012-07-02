@@ -1,6 +1,6 @@
 require 'spec_helper'
-describe Config::Store do
-  Store = Config::Store
+describe ConfigStore::Store do
+  Store = ConfigStore::Store
   after :all do
     Store.all.each do |s|
       s.destroy

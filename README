@@ -1,0 +1,9 @@
+config-store  -> load les configs (execute des exports)
+								-> rammasse org_id et store_id dans le premier .config_store en remontant
+
+config-store setup org=bobo store=bobo
+
+config-store show
+config-store add key=value
+config-store remove key
+config-store update key=value
