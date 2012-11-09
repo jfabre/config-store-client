@@ -34,14 +34,13 @@ end
 command :setup do |c|
   c.syntax = 'config-store setup [options]'
   c.summary = 'Creates or mofify your current .config-store file to setup the org/store ypur project is related to.'
-  c.description = ''
+  c.description = 'config-store setup org=myorg store=mystore'
   c.example 'description', 'config-store setup org=myorg store=mystore'
   c.option '--some-switch', 'Some switch that does something'
   c.action do |args, options|
     hash = arg_hash(args)    
 
     ConfigStore.setup(hash[:org], hash[:store])
-    # Do something or c.when_called Config-store::Commands::Setup
   end
 end
 
