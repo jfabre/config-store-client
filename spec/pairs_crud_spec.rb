@@ -1,35 +1,40 @@
 require 'spec_helper'
-describe Config::Pair do
-  Store = Config::Store
-  Pair = Config::Pair
 
+describe ConfigStore::Pair do
   before :all do
-    @store = Store.new :name => 'my store'
+    @org = ConfigStore::Organization.new name: 'org'
+    @org.save!
+    ConfigStore::Store.org = @org
+
+    @store = ConfigStore::Store.new :name => 'my store'
     @store.save!
-    Pair.store = @store
+
+    ConfigStore::Pair.store = @store
+    ConfigStore::Pair.org = @org
   end
+
   after :all do
-    @store.destroy
+    @org.destroy
   end
 
   it "creates pairs succesfully" do
-    expected = Pair.new :key => 'baba', :value => 'value'
+    expected = ConfigStore::Pair.new key: 'baba', value: 'value'
     expected.save!
 
-    actual = Pair.find(expected.id)
+    actual = ConfigStore::Pair.find(expected.id, :params => { store_id: @store.id, org_id: @org.id })
     
     actual.should == expected
   end
 
   it "updates pairs succesfully" do
-    pair = Pair.new :key => 'key', :value => 'value'
+    pair = ConfigStore::Pair.new key: 'key', value: 'value'
     pair.save!
 
-    expected = Pair.find(pair.id)
+    expected = ConfigStore::Pair.find(pair.id, params: {store_id: @store.id, org_id: @org.id })
     expected.value = 'update'
     expected.save!
 
-    actual = Pair.find(expected.id)
+    actual = ConfigStore::Pair.find(expected.id, params: {store_id: @store.id, org_id: @org.id })
     
     actual.should == expected
   end  

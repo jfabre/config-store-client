@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
-
 require 'rubygems'
-require 'commander/import'
-require './config_store'
+require 'bundler/setup'
+Bundler.require 
+require "#{File.dirname(__FILE__)}/config_store"
 
 program :version, ConfigStore::VERSION
 program :description, "Loads environment variables remotely in your project so that you don't have t write them by hand in your dotfiles."

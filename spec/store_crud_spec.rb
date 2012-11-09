@@ -1,29 +1,32 @@
 require 'spec_helper'
+
 describe ConfigStore::Store do
-  Store = ConfigStore::Store
+  before :all do    
+    @org = ConfigStore::Organization.new(name: 'myorg')
+    @org.save!
+    ConfigStore::Store.org = @org
+  end
   after :all do
-    Store.all.each do |s|
-      s.destroy
-    end
+    @org.destroy
   end
   
   it "creates one successfully" do
-    expected = Store.new :name => 'abcd'
+    expected = ConfigStore::Store.new :name => 'abcd', :org_id => @org.id
     expected.save!
 
-    actual = Store.find(expected.id)
+    actual = ConfigStore::Store.find(expected.id, params: { :org_id => @org.id })
     actual.should == expected
   end
 
   it "updates one successfully" do
-    store = Store.new :name => 'abcd'
+    store = ConfigStore::Store.new :name => 'abcd'
     store.save!
 
-    expected = Store.find(store.id)
+    expected = ConfigStore::Store.find(store.id, params: { :org_id => @org.id })
     expected.name = 'boombo'
     expected.save!
 
-    actual = Store.find(expected.id)
+    actual = ConfigStore::Store.find(expected.id, params: { :org_id => @org.id })
     
     actual.should == expected
   end
