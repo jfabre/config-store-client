@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'bundler/setup'
-Bundler.require 
-require "#{File.dirname(__FILE__)}/config_store"
+Bundler.require :default, :development, :production
+require "#{File.dirname(File.readlink(__FILE__))}/config_store"
 
 program :version, ConfigStore::VERSION
 program :description, "Loads environment variables remotely in your project so that you don't have t write them by hand in your dotfiles."
@@ -38,6 +38,9 @@ command :setup do |c|
   c.example 'description', 'config-store setup org=myorg store=mystore'
   c.option '--some-switch', 'Some switch that does something'
   c.action do |args, options|
+    hash = arg_hash(args)    
+
+    ConfigStore.setup(hash[:org], hash[:store])
     # Do something or c.when_called Config-store::Commands::Setup
   end
 end
@@ -73,3 +76,12 @@ command :update do |c|
   end
 end
 
+
+def arg_hash(args)
+  hash = {}
+  args.each do |a|
+    key_value = a.split('=')
+    hash[key_value[0].to_sym] = key_value[1]
+  end
+  hash
+end
