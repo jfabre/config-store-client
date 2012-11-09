@@ -9,6 +9,9 @@ program :description, "Loads environment variables remotely in your project so t
 default_command :export
 
 
+require 'logger'
+ActiveResource::Base.logger = Logger.new(STDOUT)
+
 command :show do |c|
   c.syntax = 'config-store show'
   c.summary = 'Displays the current environement variables in your store.'
@@ -49,7 +52,9 @@ command :add do |c|
   c.summary = 'Adds key-value pair(s) to your store.'
   c.example 'Adds two new pairs to your store', 'config-store add key=value key2=value2'
   c.action do |args, options|
-    # Do something or c.when_called Config-store::Commands::Add
+    hash = arg_hash(args)
+
+    ConfigStore.add hash
   end
 end
 
@@ -64,18 +69,6 @@ command :remove do |c|
   end
 end
 
-command :update do |c|
-  c.syntax = 'config-store update [options]'
-  c.summary = ''
-  c.description = ''
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
-  c.action do |args, options|
-    # Do something or c.when_called Config-store::Commands::Update
-  end
-end
-
-
 def arg_hash(args)
   hash = {}
   args.each do |a|
@@ -84,3 +77,4 @@ def arg_hash(args)
   end
   hash
 end
+
