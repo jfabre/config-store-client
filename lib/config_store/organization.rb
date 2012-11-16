@@ -2,7 +2,7 @@ module ConfigStore
   
   class Organization < ActiveResource::Base
     extend Query
-    self.site = "http://127.0.0.1:3000"
+    self.site = ConfigStore.site
     def self.prefix_options
       {}
     end

@@ -53,7 +53,7 @@ Bundler.with_clean_env do
     c.action do |args, options|
       hash = arg_hash(args)    
 
-      ConfigStore.setup(hash[:org], hash[:store])
+      ConfigStore.setup(hash[:org], hash[:store], hash[:site])
     end
   end
 

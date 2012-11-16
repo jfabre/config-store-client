@@ -1,7 +1,7 @@
 module ConfigStore
   class Store < ActiveResource::Base
     extend Query
-    self.site = "http://127.0.0.1:3000"
+    self.site = ConfigStore.site
     self.prefix = "/organizations/:org_id/"  
 
     def self.org= value
