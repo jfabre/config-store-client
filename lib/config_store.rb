@@ -1,5 +1,4 @@
 module ConfigStore
-  VERSION = '0.1'
   def self.site
     @site || 'http://127.0.0.1:3000'
   end
@@ -23,7 +22,8 @@ module ConfigStore
   autoload :Pair, "#{dir}/config_store/pair"
   autoload :Organization, "#{dir}/config_store/organization"
   autoload :Store, "#{dir}/config_store/store"
-
+  autoload :Version, "#{dir}/config_store/version"
+  
   def self.setup(org_name, store_name, site)
     unless site.nil?
       Organization.site = site

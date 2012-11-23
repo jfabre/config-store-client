@@ -14,7 +14,7 @@ Bundler.with_clean_env do
   Bundler.require :default, :development, :production
   require config_store
 
-  program :version, ConfigStore::VERSION
+  program :version, ConfigStore::Version
   program :description, "Loads environment variables remotely in your project so that you don't have t write them by hand in your dotfiles."
   default_command :export
 
