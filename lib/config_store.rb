@@ -7,9 +7,16 @@ module ConfigStore
     @site = value
   end
   def self.store_keys
-    @keys ||= File.open(".config-store", 'r') { |f| JSON.parse(f.read).inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo } }
+    @keys ||= get_store_keys 
   end
-
+  def self.get_store_keys
+    if File.exists? '.config-store'
+      File.open('.config-store', 'r') { |f| JSON.parse(f.read).inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo } }
+    else
+      {} 
+    end
+  end
+  
   self.site = store_keys[:site] 
   dir = File.dirname(__FILE__) 
   autoload :Query, "#{dir}/config_store/query"
@@ -17,6 +24,20 @@ module ConfigStore
   autoload :Organization, "#{dir}/config_store/organization"
   autoload :Store, "#{dir}/config_store/store"
 
+  def self.setup(org_name, store_name, site)
+    unless site.nil?
+      Organization.site = site
+      Store.site = site
+      Pair.site = site
+    end
+    org = Organization.find_by_name(org_name) || Organization.create(name: org_name)
+    Store.org = org
+    store = Store.find_by_name(store_name) || Store.create(name: org_name)
+
+    to_store = {:store => store.id, :org => org.id, :site => site || store_keys[:site]}.to_json
+    File.open(".config-store", 'w') {|f| f.write(to_store) }
+  end
+  
   def self.show
     load_associations
     pairs = index
@@ -43,20 +64,6 @@ module ConfigStore
     end
   end
 
-  def self.setup(org_name, store_name, site)
-    unless site.nil?
-      Organization.site = site
-      Store.site = site
-      Pair.site = site
-    end
-    org = Organization.find_by_name(org_name) || Organization.create(name: org_name)
-    Store.org = org
-    store = Store.find_by_name(store_name) || Store.create(name: org_name)
-
-    to_store = {:store => store.id, :org => org.id, :site => site || store_keys[:site]}.to_json
-    File.open(".config-store", 'w') {|f| f.write(to_store) }
-  end
- 
   def self.add(key_values)
     load_associations
     pairs = index

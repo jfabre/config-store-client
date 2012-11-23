@@ -1,7 +1,5 @@
-require './lib/config_store'
+require 'rubygems'
+require 'bundler/setup'
+Bundler.require :default
+require "bundler/gem_tasks"
 
-desc 'allo'
-task :allo do 
-  
-end
-./

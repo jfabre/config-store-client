@@ -2,10 +2,9 @@
 require 'rubygems'
 require 'bundler'
 
-script_file = File.readlink(__FILE__)
-dir_name = File.dirname(script_file)
-config_store = "#{dir_name}/config_store"
-gem_file = "#{File.dirname(dir_name)}/Gemfile"
+dir_name = File.expand_path("..", File.dirname(__FILE__))
+config_store = "#{dir_name}/lib/config_store"
+gem_file = "#{dir_name}/Gemfile"
 bin_path = ENV['BUNDLE_BIN_PATH']
 
 Bundler.with_clean_env do
