@@ -1,3 +1,6 @@
+require 'active_resource'
+require 'json'
+
 module ConfigStore
   def self.site
     @site || 'http://127.0.0.1:3000'
