@@ -20,4 +20,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'activeresource'
   gem.add_dependency 'json'
   gem.add_dependency 'commander'
+  gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'rspec'
 end
