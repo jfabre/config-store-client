@@ -2,33 +2,33 @@
 
 require 'commander/import'
 dir_name = File.expand_path("..", File.dirname(__FILE__))
-config_store = "#{dir_name}/lib/config_store"
-require config_store
+require "#{dir_name}/lib/config_store"
 
 program :version, ConfigStore::Version
-program :description, "Loads environment variables remotely in your project so that you don't have t write them by hand in your dotfiles."
-default_command :export
+program :description, "Loads environment variables from a remote server for easy and secure sharing/switching of project configuration."
+program :help_formatter, :compact
+default_command :show
 
-#require 'logger'
-#ActiveResource::Base.logger = Logger.new(STDOUT)
+$log = false
+global_option('-l', '--log', 'Outputs the log of http queries sent to the server') { $log = true }
+def activate_logs
+  require 'logger'
+  ActiveResource::Base.logger = Logger.new(STDOUT)
+end
 
 command :show do |c|
   c.syntax = 'config-store show'
-  c.summary = 'Displaent variables in youys the current environment store.'
-  c.description = ''
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
+  c.summary = 'Displays all the variables for the current store.'
   c.action do |args, options|
+    activate_logs
     ConfigStore.show
   end
 end
 
 command :export do |c|
   c.syntax = 'config-store export'
-  c.summary = 'Runs an export for every key-value pair in your store. This is what you want to call in your dotfiles.'
-  c.description = ''
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
+  activate_logs
+  c.summary = 'Outputs the all the exports needed for all the env variables in the store.'
   c.action do |args, options|
     ConfigStore.export
   end
@@ -36,13 +36,11 @@ end
 
 command :setup do |c| 
   c.syntax = 'config-store setup [options]'
-  c.summary = 'Creates or mofify your current .config-store file to setup the org/store ypur project is related to.'
-  c.description = 'config-store setup org=myorg store=mystore'
-  c.example 'description', 'config-store setup org=myorg store=mystore'
-  c.option '--some-switch', 'Some switch that does something'
+  c.summary = 'Creates or mofify your current .config-store file to setup the org/store your project is related to.'
+  c.example 'Configures the site, org and store to use within this directory', 'config-store setup site=https://www.mysite.com/endpoint org=myorg store=mystore'
   c.action do |args, options|
+    activate_logs
     hash = arg_hash(args)    
-
     ConfigStore.setup(hash[:org], hash[:store], hash[:site])
   end
 end
@@ -52,19 +50,18 @@ command :add do |c|
   c.summary = 'Adds key-value pair(s) to your store.'
   c.example 'Adds two new pairs to your store', 'config-store add key=value key2=value2'
   c.action do |args, options|
+    activate_logs
     hash = arg_hash(args)
-
     ConfigStore.add hash
   end
 end
 
 command :delete do |c|
-  c.syntax = 'config-store remove [options]'
-  c.summary = ''
-  c.description = ''
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
+  c.syntax = 'config-store delete key1 key2 key3'
+  c.summary = 'Deletes keys within your store'
+  c.example 'keys names foo and bar will be removed', 'config-store delete foo bar'
   c.action do |args, options|
+    activate_logs
     ConfigStore.delete args
   end
 end
