@@ -10,6 +10,9 @@ bin_path = ENV['BUNDLE_BIN_PATH']
 Bundler.with_clean_env do
   ENV['BUNDLE_BIN_PATH'] = bin_path
   ENV['BUNDLE_GEMFILE'] = gem_file
+  
+  puts bin_path
+  puts gem_file
   require 'bundler/setup'
   Bundler.require :default, :development, :production
   require config_store
