@@ -15,8 +15,8 @@ def activate_logs
   require 'logger'
   ActiveResource::Base.logger = Logger.new(STDOUT)
 end
-def init
-  ConfigStore.validate_file
+def init(validate = true)
+  ConfigStore.validate_file if validate
   activate_logs if $log
 end
 command :show do |c|
@@ -42,6 +42,7 @@ command :setup do |c|
   c.summary = 'Creates or mofify your current .config-store file to setup the org/store your project is related to.'
   c.example 'Configures the site, org and store to use within this directory', 'config-store setup site=https://www.mysite.com/endpoint org=myorg store=mystore'
   c.action do |args, options|
+    init(false)
     hash = arg_hash(args)    
     ConfigStore.setup(hash[:org], hash[:store], hash[:site])
   end
