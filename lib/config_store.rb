@@ -60,7 +60,7 @@ module ConfigStore
     pairs = index
 
     if pairs.size > 0
-      command = pairs.map{|p| "export #{p.key}=#{p.value}" }.join(' && ')
+      command = pairs.map{|p| "export #{p.key}='#{p.value}'" }.join(' && ')
       $stdout.write command
     else
       $stdout.write "echo \"config-store: Nothing to export.\""
