@@ -20,14 +20,14 @@ command :show do |c|
   c.syntax = 'config-store show'
   c.summary = 'Displays all the variables for the current store.'
   c.action do |args, options|
-    activate_logs
+    activate_logs if $log
     ConfigStore.show
   end
 end
 
 command :export do |c|
   c.syntax = 'config-store export'
-  activate_logs
+  activate_logs if $log
   c.summary = 'Outputs the all the exports needed for all the env variables in the store.'
   c.action do |args, options|
     ConfigStore.export
@@ -39,7 +39,7 @@ command :setup do |c|
   c.summary = 'Creates or mofify your current .config-store file to setup the org/store your project is related to.'
   c.example 'Configures the site, org and store to use within this directory', 'config-store setup site=https://www.mysite.com/endpoint org=myorg store=mystore'
   c.action do |args, options|
-    activate_logs
+    activate_logs if $log
     hash = arg_hash(args)    
     ConfigStore.setup(hash[:org], hash[:store], hash[:site])
   end
@@ -50,7 +50,7 @@ command :add do |c|
   c.summary = 'Adds key-value pair(s) to your store.'
   c.example 'Adds two new pairs to your store', 'config-store add key=value key2=value2'
   c.action do |args, options|
-    activate_logs
+    activate_logs if $log
     hash = arg_hash(args)
     ConfigStore.add hash
   end
@@ -61,7 +61,7 @@ command :delete do |c|
   c.summary = 'Deletes keys within your store'
   c.example 'keys names foo and bar will be removed', 'config-store delete foo bar'
   c.action do |args, options|
-    activate_logs
+    activate_logs if $log
     ConfigStore.delete args
   end
 end
