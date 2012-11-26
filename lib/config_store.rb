@@ -91,6 +91,13 @@ module ConfigStore
   end
 
   private 
+    def self.validate_file
+      unless File.exist?('.config-store')
+        puts ' --> No .config-store ' 
+        exit
+      end
+    end
+
     def self.index
       @pairs ||= Pair.all(params: Pair.prefix_options)
     end

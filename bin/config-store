@@ -15,21 +15,24 @@ def activate_logs
   require 'logger'
   ActiveResource::Base.logger = Logger.new(STDOUT)
 end
-
+def init
+  ConfigStore.validate_file
+  activate_logs if $log
+end
 command :show do |c|
   c.syntax = 'config-store show'
   c.summary = 'Displays all the variables for the current store.'
   c.action do |args, options|
-    activate_logs if $log
+    init
     ConfigStore.show
   end
 end
 
 command :export do |c|
   c.syntax = 'config-store export'
-  activate_logs if $log
   c.summary = 'Outputs the all the exports needed for all the env variables in the store.'
   c.action do |args, options|
+    init
     ConfigStore.export
   end
 end
@@ -39,7 +42,6 @@ command :setup do |c|
   c.summary = 'Creates or mofify your current .config-store file to setup the org/store your project is related to.'
   c.example 'Configures the site, org and store to use within this directory', 'config-store setup site=https://www.mysite.com/endpoint org=myorg store=mystore'
   c.action do |args, options|
-    activate_logs if $log
     hash = arg_hash(args)    
     ConfigStore.setup(hash[:org], hash[:store], hash[:site])
   end
@@ -50,7 +52,7 @@ command :add do |c|
   c.summary = 'Adds key-value pair(s) to your store.'
   c.example 'Adds two new pairs to your store', 'config-store add key=value key2=value2'
   c.action do |args, options|
-    activate_logs if $log
+    init 
     hash = arg_hash(args)
     ConfigStore.add hash
   end
