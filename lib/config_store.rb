@@ -35,7 +35,7 @@ module ConfigStore
     end
     org = Organization.find_by_name(org_name) || Organization.create(name: org_name)
     Store.org = org
-    store = Store.find_by_name(store_name) || Store.create(name: org_name)
+    store = Store.find_by_name(store_name) || Store.create(name: store_name)
 
     to_store = {:store => store.id, :org => org.id, :site => site || store_keys[:site]}.to_json
     File.open(".config-store", 'w') {|f| f.write(to_store) }
