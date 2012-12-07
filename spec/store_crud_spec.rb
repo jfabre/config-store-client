@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe ConfigStore::Store do
-  before :all do    
+  before :each do    
     @org = ConfigStore::Organization.new(name: 'myorg')
     @org.save!
     ConfigStore::Store.org = @org
   end
-  after :all do
+  after :each do
     @org.destroy
   end
   
