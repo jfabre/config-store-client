@@ -79,7 +79,7 @@ module ConfigStore
     end
 
     to_update.each do |p|
-      p.value = key_values[p.key]
+      p.value = key_values[p.key.to_sym]
       p.save!
     end
   end
