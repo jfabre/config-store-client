@@ -77,7 +77,11 @@ module ConfigStore
     to_create.each do |k, v|
       Pair.create(:key => k, :value => v)
     end
-    to_update.each { |p| p.save! }
+
+    to_update.each do |p|
+      p.value = key_values[p.key]
+      p.save!
+    end
   end
 
   def self.delete(keys)
